@@ -24,7 +24,7 @@ import {
 // Import custom components (to be created later)
 // import Navbar from '../components/Navbar';
 // import MusicCard from '../components/MusicCard';
-// import Player from '../components/Player/AudioPlayer';
+//import Player from '../components/Player/AudioPlayer';
 
 const Home = () => {
   // ========== STATE MANAGEMENT ==========
@@ -554,80 +554,7 @@ const Home = () => {
             </div>
           </section>
 
-          {/* ========== NOW PLAYING BAR ========== */}
-          {/* This would be a separate Player component in production */}
-          {currentTrack && (
-            <div className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-white/10 p-4">
-              <div className="max-w-7xl mx-auto">
-                <div className="flex items-center justify-between">
-                  
-                  {/* Current Track Info */}
-                  <div className="flex items-center space-x-4">
-                    <div className="w-14 h-14 bg-gradient-to-br from-cyan-600 to-purple-600 rounded-lg flex items-center justify-center">
-                      <Music className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <div className="font-medium">{currentTrack.title}</div>
-                      <div className="text-sm text-slate-400">{currentTrack.artist}</div>
-                    </div>
-                    <button 
-                      onClick={() => handleToggleFavorite(currentTrack.id)}
-                      className={`ml-4 ${favorites.some(f => f.id === currentTrack.id) ? 'text-rose-400' : 'text-slate-400 hover:text-rose-400'}`}
-                    >
-                      <Heart className={`w-5 h-5 ${favorites.some(f => f.id === currentTrack.id) ? 'fill-rose-400' : ''}`} />
-                    </button>
-                  </div>
-
-                  {/* Player Controls */}
-                  <div className="flex flex-col items-center space-y-2">
-                    <div className="flex items-center space-x-6">
-                      <button className="text-slate-400 hover:text-white">
-                        <Shuffle className="w-5 h-5" />
-                      </button>
-                      <button className="text-slate-400 hover:text-white">
-                        <SkipBack className="w-5 h-5" />
-                      </button>
-                      <button 
-                        onClick={handlePlayPause}
-                        className="w-12 h-12 bg-cyan-500 hover:bg-cyan-600 rounded-full flex items-center justify-center"
-                      >
-                        {isPlaying ? (
-                          <Pause className="w-6 h-6 text-white" />
-                        ) : (
-                          <Play className="w-6 h-6 text-white" />
-                        )}
-                      </button>
-                      <button className="text-slate-400 hover:text-white">
-                        <SkipForward className="w-5 h-5" />
-                      </button>
-                      <button className="text-slate-400 hover:text-white">
-                        <MoreVertical className="w-5 h-5" />
-                      </button>
-                    </div>
-                    
-                    {/* Progress Bar */}
-                    <div className="flex items-center space-x-4 w-96">
-                      <span className="text-xs text-slate-400">1:23</span>
-                      <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-cyan-500 w-1/3"></div>
-                      </div>
-                      <span className="text-xs text-slate-400">{currentTrack.duration}</span>
-                    </div>
-                  </div>
-
-                  {/* Volume & Settings */}
-                  <div className="flex items-center space-x-4">
-                    <button className="text-slate-400 hover:text-white">
-                      <Volume2 className="w-5 h-5" />
-                    </button>
-                    <div className="w-24 h-1 bg-white/10 rounded-full overflow-hidden">
-                      <div className="h-full bg-cyan-500 w-2/3"></div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+       
         </main>
       </div>
     </div>

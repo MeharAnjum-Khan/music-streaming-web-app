@@ -1,0 +1,169 @@
+/* VolumeControl.css - Spotify Style */
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+
+.volume-button {
+  background: none;
+  border: none;
+  color: #b3b3b3;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  border-radius: 50%;
+}
+
+.volume-button:hover {
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.volume-icon {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.volume-slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(0, 0, 0, 0.9);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  border: 1px solid #282828;
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  margin-bottom: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+.volume-control:hover .volume-slider-container {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.volume-slider-container.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.volume-slider {
+  height: 100px;
+  width: 4px;
+  background: #535353;
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.volume-slider-fill {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #1db954;
+  border-radius: 2px;
+  transition: height 0.1s;
+}
+
+.volume-slider-handle {
+  width: 12px;
+  height: 12px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.volume-slider:hover .volume-slider-handle {
+  opacity: 1;
+}
+
+.volume-percentage {
+  font-size: 12px;
+  color: #b3b3b3;
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Volume Markers */
+.volume-markers {
+  position: absolute;
+  left: -30px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.volume-marker {
+  font-size: 10px;
+  color: #535353;
+  text-align: right;
+}
+
+/* Volume Presets */
+.volume-presets {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+  justify-content: center;
+}
+
+.volume-preset-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #b3b3b3;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.volume-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+/* Muted State */
+.volume-control.muted .volume-icon {
+  color: #b3b3b3;
+}
+
+.volume-control.muted .volume-slider-fill {
+  background: #535353;
+}
+
+/* Compact Mode */
+.volume-control.compact .volume-slider-container {
+  padding: 12px;
+}
+
+.volume-control.compact .volume-slider {
+  height: 80px;
+}
