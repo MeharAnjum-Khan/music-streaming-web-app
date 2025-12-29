@@ -1,3 +1,5 @@
+
+
 import React, { useState, useRef, useEffect } from 'react';
 import './VolumeControl.css'; // Assuming you have a CSS file for styling
 

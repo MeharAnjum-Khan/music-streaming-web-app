@@ -1,3 +1,178 @@
+// import React, { createContext, useState, useContext, useRef } from 'react'
+
+// /**
+//  * Player Context
+//  * Manages global audio player state
+//  * Controls playback, queue, volume, and current track
+//  */
+// const PlayerContext = createContext()
+
+// export const usePlayer = () => {
+//   const context = useContext(PlayerContext)
+//   if (!context) {
+//     throw new Error('usePlayer must be used within a PlayerProvider')
+//   }
+//   return context
+// }
+
+// export const PlayerProvider = ({ children }) => {
+//   // Audio element reference for direct DOM manipulation
+//   const audioRef = useRef(null)
+  
+//   // Current playing track state - Set default track from template
+//   const [currentTrack, setCurrentTrack] = useState({
+//     id: '1',
+//     title: 'Domestic Sweater',
+//     artist: 'Wheeled',
+//     coverUrl: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop',
+//     audioUrl: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+//     type: 'song'
+//   })
+  
+//   // Playback state
+//   const [isPlaying, setIsPlaying] = useState(false)
+  
+//   // Volume state (0 to 1)
+//   const [volume, setVolume] = useState(0.7)
+  
+//   // Progress state (0 to 100)
+//   const [progress, setProgress] = useState(0)
+  
+//   // Duration of current track in seconds
+//   const [duration, setDuration] = useState(0)
+  
+//   // Current playback time in seconds
+//   const [currentTime, setCurrentTime] = useState(0)
+  
+//   // Playlist queue
+//   const [queue, setQueue] = useState([])
+  
+//   // Repeat mode: 'none', 'one', 'all'
+//   const [repeatMode, setRepeatMode] = useState('none')
+  
+//   // Shuffle state
+//   const [isShuffle, setIsShuffle] = useState(false)
+
+//   /**
+//    * Play a specific track
+//    * @param {Object} track - Track to play
+//    */
+//   const playTrack = (track) => {
+//     if (track) {
+//       setCurrentTrack(track)
+//       setIsPlaying(true)
+//       // Reset progress when changing tracks
+//       setProgress(0)
+//       setCurrentTime(0)
+//     }
+//   }
+
+//   /**
+//    * Toggle play/pause
+//    */
+//   const togglePlayPause = () => {
+//     setIsPlaying(!isPlaying)
+//   }
+
+//   /**
+//    * Skip to next track in queue
+//    */
+//   const nextTrack = () => {
+//     if (queue.length > 0) {
+//       const currentIndex = queue.findIndex(track => track.id === currentTrack?.id)
+//       const nextIndex = (currentIndex + 1) % queue.length
+//       playTrack(queue[nextIndex])
+//     }
+//   }
+
+//   /**
+//    * Go to previous track
+//    */
+//   const previousTrack = () => {
+//     if (queue.length > 0) {
+//       const currentIndex = queue.findIndex(track => track.id === currentTrack?.id)
+//       const prevIndex = currentIndex > 0 ? currentIndex - 1 : queue.length - 1
+//       playTrack(queue[prevIndex])
+//     }
+//   }
+
+//   /**
+//    * Update volume
+//    * @param {number} newVolume - Volume level (0 to 1)
+//    */
+//   const updateVolume = (newVolume) => {
+//     setVolume(newVolume)
+//     if (audioRef.current) {
+//       audioRef.current.volume = newVolume
+//     }
+//   }
+
+//   /**
+//    * Seek to specific time in track
+//    * @param {number} time - Time in seconds
+//    */
+//   const seekTo = (time) => {
+//     if (audioRef.current) {
+//       audioRef.current.currentTime = time
+//       setCurrentTime(time)
+//       setProgress((time / duration) * 100)
+//     }
+//   }
+
+//   /**
+//    * Add tracks to queue
+//    * @param {Array} tracks - Array of track objects
+//    * @param {boolean} clearPrevious - Whether to clear existing queue
+//    */
+//   const addToQueue = (tracks, clearPrevious = false) => {
+//     if (clearPrevious) {
+//       setQueue(Array.isArray(tracks) ? tracks : [tracks])
+//     } else {
+//       setQueue(prev => [...prev, ...(Array.isArray(tracks) ? tracks : [tracks])])
+//     }
+//   }
+
+//   /**
+//    * Clear the entire queue
+//    */
+//   const clearQueue = () => {
+//     setQueue([])
+//   }
+
+//   // Context value containing all player-related data and functions
+//   const value = {
+//     audioRef,
+//     currentTrack,
+//     isPlaying,
+//     volume,
+//     progress,
+//     duration,
+//     currentTime,
+//     queue,
+//     repeatMode,
+//     isShuffle,
+//     playTrack,
+//     togglePlayPause,
+//     nextTrack,
+//     previousTrack,
+//     updateVolume,
+//     seekTo,
+//     addToQueue,
+//     clearQueue,
+//     setDuration,
+//     setCurrentTime,
+//     setProgress,
+//     setRepeatMode,
+//     setIsShuffle
+//   }
+
+//   return (
+//     <PlayerContext.Provider value={value}>
+//       {children}
+//     </PlayerContext.Provider>
+//   )
+// }
+
 import React, { createContext, useState, useContext, useReducer, useEffect } from 'react';
 
 /**

@@ -1,3 +1,4 @@
+
 // Import React and necessary hooks
 import React, { useState, useEffect } from 'react';
 // Import routing utilities for navigation
@@ -22,8 +23,8 @@ import {
   Volume2
 } from 'lucide-react';
 // Import custom components (to be created later)
-// import Navbar from '../components/Navbar';
-// import MusicCard from '../components/MusicCard';
+//import Navbar from '../components/Navbar';
+//import MusicCard from '../components/MusicCard';
 //import Player from '../components/Player/AudioPlayer';
 
 const Home = () => {
@@ -562,3 +563,56 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+
+// import React from 'react'
+// import { Routes, Route } from 'react-router-dom'
+// import { AuthProvider } from './components/context/AuthContext'
+// import { PlayerProvider } from './components/context/PlayerContext'
+// import { Toaster } from 'react-hot-toast'   // ✅ ADD THIS
+// import Navbar from './components/Navbar'
+// import AudioPlayer from './components/player/AudioPlayer'
+// import Home from './components/pages/Home'
+// import Login from './components/pages/Login'
+// import Register from './components/pages/Register'
+// import Music from './components/pages/Music'
+// import Podcasts from './components/pages/Podcasts'
+// import Playlist from './components/pages/Playlist'
+// import AdminUpload from './components/pages/AdminUpload'
+
+// function App() {
+//   return (
+//     <AuthProvider>
+//       <PlayerProvider>
+
+//         {/* ✅ ADD THIS */}
+//         <Toaster position="top-right" reverseOrder={false} />
+
+//         <div className="min-h-screen bg-dark-bg text-white">
+//           <div className="flex h-screen">
+//             <Navbar />
+            
+//             <main className="flex-1 overflow-y-auto pb-24">
+//               <Routes>
+//                 <Route path="/" element={<Home />} />
+//                 <Route path="/login" element={<Login />} />
+//                 <Route path="/register" element={<Register />} />
+//                 <Route path="/music" element={<Music />} />
+//                 <Route path="/podcasts" element={<Podcasts />} />
+//                 <Route path="/playlist/:id" element={<Playlist />} />
+//                 <Route path="/admin/upload" element={<AdminUpload />} />
+//               </Routes>
+//             </main>
+//           </div>
+
+//           <AudioPlayer />
+//         </div>
+
+//       </PlayerProvider>
+//     </AuthProvider>
+//   )
+// }
+
+// export default App

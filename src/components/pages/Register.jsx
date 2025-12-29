@@ -1,3 +1,431 @@
+// import React, { useState } from 'react'
+// import { Link, useNavigate } from 'react-router-dom'
+// import { useAuth } from '../context/AuthContext'
+// import { Music, Mail, Lock, User, Eye, EyeOff, Calendar } from 'lucide-react'
+// import toast from 'react-hot-toast'
+
+// /**
+//  * Registration Page Component
+//  * Handles new user account creation with form validation
+//  */
+// const Register = () => {
+//   const [formData, setFormData] = useState({
+//     name: '',
+//     email: '',
+//     password: '',
+//     confirmPassword: '',
+//     birthDate: '',
+//     acceptTerms: false,
+//     newsletter: true
+//   })
+//   const [showPassword, setShowPassword] = useState(false)
+//   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+//   const [isLoading, setIsLoading] = useState(false)
+//   const [errors, setErrors] = useState({})
+  
+//   const { login } = useAuth()
+//   const navigate = useNavigate()
+
+//   /**
+//    * Handle input changes
+//    */
+//   const handleChange = (e) => {
+//     const { name, value, type, checked } = e.target
+//     setFormData(prev => ({
+//       ...prev,
+//       [name]: type === 'checkbox' ? checked : value
+//     }))
+    
+//     // Clear error for this field
+//     if (errors[name]) {
+//       setErrors(prev => ({ ...prev, [name]: '' }))
+//     }
+//   }
+
+//   /**
+//    * Validate form data
+//    */
+//   const validateForm = () => {
+//     const newErrors = {}
+    
+//     // Name validation
+//     if (!formData.name.trim()) {
+//       newErrors.name = 'Full name is required'
+//     } else if (formData.name.trim().length < 2) {
+//       newErrors.name = 'Name must be at least 2 characters'
+//     }
+    
+//     // Email validation
+//     if (!formData.email.trim()) {
+//       newErrors.email = 'Email is required'
+//     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+//       newErrors.email = 'Please enter a valid email address'
+//     }
+    
+//     // Password validation
+//     if (!formData.password) {
+//       newErrors.password = 'Password is required'
+//     } else if (formData.password.length < 8) {
+//       newErrors.password = 'Password must be at least 8 characters'
+//     } else if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(formData.password)) {
+//       newErrors.password = 'Password must contain uppercase, lowercase, and numbers'
+//     }
+    
+//     // Confirm password validation
+//     if (!formData.confirmPassword) {
+//       newErrors.confirmPassword = 'Please confirm your password'
+//     } else if (formData.password !== formData.confirmPassword) {
+//       newErrors.confirmPassword = 'Passwords do not match'
+//     }
+    
+//     // Birth date validation
+//     if (!formData.birthDate) {
+//       newErrors.birthDate = 'Birth date is required'
+//     } else {
+//       const birthDate = new Date(formData.birthDate)
+//       const today = new Date()
+//       const age = today.getFullYear() - birthDate.getFullYear()
+      
+//       if (age < 13) {
+//         newErrors.birthDate = 'You must be at least 13 years old'
+//       }
+//     }
+    
+//     // Terms acceptance validation
+//     if (!formData.acceptTerms) {
+//       newErrors.acceptTerms = 'You must accept the terms and conditions'
+//     }
+    
+//     setErrors(newErrors)
+//     return Object.keys(newErrors).length === 0
+//   }
+
+//   /**
+//    * Handle form submission
+//    */
+//   const handleSubmit = async (e) => {
+//     e.preventDefault()
+    
+//     if (!validateForm()) {
+//       return
+//     }
+    
+//     setIsLoading(true)
+    
+//     try {
+//       // Simulate API call delay
+//       await new Promise(resolve => setTimeout(resolve, 1500))
+      
+//       // Create mock user - Replace with actual Firebase registration
+//       const mockUser = {
+//         id: `user_${Date.now()}`,
+//         email: formData.email,
+//         name: formData.name,
+//         avatar: null,
+//         subscription: 'free',
+//         birthDate: formData.birthDate,
+//         newsletter: formData.newsletter,
+//         createdAt: new Date().toISOString()
+//       }
+      
+//       // Save to context and localStorage
+//       login(mockUser)
+      
+//       // Show success message
+//       toast.success('Account created successfully! Welcome to SoundWave.')
+      
+//       // Redirect to home page
+//       navigate('/')
+      
+//     } catch (error) {
+//       console.error('Registration error:', error)
+//       toast.error(error.message || 'Registration failed. Please try again.')
+//     } finally {
+//       setIsLoading(false)
+//     }
+//   }
+
+//   /**
+//    * Calculate minimum and maximum birth dates for validation
+//    */
+//   const today = new Date()
+//   const minDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate())
+//   const maxDate = new Date(today.getFullYear() - 13, today.getMonth(), today.getDate())
+
+//   return (
+//     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-900 to-black p-4">
+//       <div className="w-full max-w-2xl">
+//         {/* Header */}
+//         <div className="text-center mb-8">
+//           <div className="flex justify-center mb-4">
+//             <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+//               <Music size={32} className="text-white" />
+//             </div>
+//           </div>
+//           <h1 className="text-3xl font-bold text-white mb-2">Join SoundWave</h1>
+//           <p className="text-gray-400">Create your account and start listening</p>
+//         </div>
+
+//         {/* Registration Form */}
+//         <div className="bg-gray-800 rounded-2xl p-8 shadow-2xl">
+//           <form onSubmit={handleSubmit} className="space-y-6">
+//             {/* Two-column layout for larger screens */}
+//             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+//               {/* Name Field */}
+//               <div>
+//                 <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
+//                   Full Name
+//                 </label>
+//                 <div className="relative">
+//                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                     <User size={20} className="text-gray-400" />
+//                   </div>
+//                   <input
+//                     type="text"
+//                     id="name"
+//                     name="name"
+//                     value={formData.name}
+//                     onChange={handleChange}
+//                     className={`w-full pl-10 pr-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+//                       errors.name ? 'border-red-500' : 'border-gray-700'
+//                     }`}
+//                     placeholder="John Doe"
+//                     disabled={isLoading}
+//                   />
+//                 </div>
+//                 {errors.name && (
+//                   <p className="mt-2 text-sm text-red-400">{errors.name}</p>
+//                 )}
+//               </div>
+
+//               {/* Email Field */}
+//               <div>
+//                 <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+//                   Email Address
+//                 </label>
+//                 <div className="relative">
+//                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                     <Mail size={20} className="text-gray-400" />
+//                   </div>
+//                   <input
+//                     type="email"
+//                     id="email"
+//                     name="email"
+//                     value={formData.email}
+//                     onChange={handleChange}
+//                     className={`w-full pl-10 pr-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+//                       errors.email ? 'border-red-500' : 'border-gray-700'
+//                     }`}
+//                     placeholder="you@example.com"
+//                     disabled={isLoading}
+//                   />
+//                 </div>
+//                 {errors.email && (
+//                   <p className="mt-2 text-sm text-red-400">{errors.email}</p>
+//                 )}
+//               </div>
+
+//               {/* Password Field */}
+//               <div>
+//                 <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+//                   Password
+//                 </label>
+//                 <div className="relative">
+//                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                     <Lock size={20} className="text-gray-400" />
+//                   </div>
+//                   <input
+//                     type={showPassword ? 'text' : 'password'}
+//                     id="password"
+//                     name="password"
+//                     value={formData.password}
+//                     onChange={handleChange}
+//                     className={`w-full pl-10 pr-12 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+//                       errors.password ? 'border-red-500' : 'border-gray-700'
+//                     }`}
+//                     placeholder="••••••••"
+//                     disabled={isLoading}
+//                   />
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowPassword(!showPassword)}
+//                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors"
+//                     disabled={isLoading}
+//                   >
+//                     {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+//                   </button>
+//                 </div>
+//                 {errors.password && (
+//                   <p className="mt-2 text-sm text-red-400">{errors.password}</p>
+//                 )}
+//                 <div className="mt-2 text-xs text-gray-400">
+//                   Must be at least 8 characters with uppercase, lowercase, and numbers
+//                 </div>
+//               </div>
+
+//               {/* Confirm Password Field */}
+//               <div>
+//                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
+//                   Confirm Password
+//                 </label>
+//                 <div className="relative">
+//                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                     <Lock size={20} className="text-gray-400" />
+//                   </div>
+//                   <input
+//                     type={showConfirmPassword ? 'text' : 'password'}
+//                     id="confirmPassword"
+//                     name="confirmPassword"
+//                     value={formData.confirmPassword}
+//                     onChange={handleChange}
+//                     className={`w-full pl-10 pr-12 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+//                       errors.confirmPassword ? 'border-red-500' : 'border-gray-700'
+//                     }`}
+//                     placeholder="••••••••"
+//                     disabled={isLoading}
+//                   />
+//                   <button
+//                     type="button"
+//                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+//                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors"
+//                     disabled={isLoading}
+//                   >
+//                     {showConfirmPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+//                   </button>
+//                 </div>
+//                 {errors.confirmPassword && (
+//                   <p className="mt-2 text-sm text-red-400">{errors.confirmPassword}</p>
+//                 )}
+//               </div>
+
+//               {/* Birth Date Field */}
+//               <div>
+//                 <label htmlFor="birthDate" className="block text-sm font-medium text-gray-300 mb-2">
+//                   Date of Birth
+//                 </label>
+//                 <div className="relative">
+//                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                     <Calendar size={20} className="text-gray-400" />
+//                   </div>
+//                   <input
+//                     type="date"
+//                     id="birthDate"
+//                     name="birthDate"
+//                     value={formData.birthDate}
+//                     onChange={handleChange}
+//                     min={minDate.toISOString().split('T')[0]}
+//                     max={maxDate.toISOString().split('T')[0]}
+//                     className={`w-full pl-10 pr-4 py-3 bg-gray-900 border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all ${
+//                       errors.birthDate ? 'border-red-500' : 'border-gray-700'
+//                     }`}
+//                     disabled={isLoading}
+//                   />
+//                 </div>
+//                 {errors.birthDate && (
+//                   <p className="mt-2 text-sm text-red-400">{errors.birthDate}</p>
+//                 )}
+//                 <div className="mt-2 text-xs text-gray-400">
+//                   You must be at least 13 years old
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Checkboxes */}
+//             <div className="space-y-4">
+//               <div className="flex items-start">
+//                 <input
+//                   type="checkbox"
+//                   id="acceptTerms"
+//                   name="acceptTerms"
+//                   checked={formData.acceptTerms}
+//                   onChange={handleChange}
+//                   className="w-4 h-4 mt-1 text-green-500 bg-gray-900 border-gray-700 rounded focus:ring-green-500 focus:ring-2"
+//                   disabled={isLoading}
+//                 />
+//                 <label htmlFor="acceptTerms" className="ml-2 text-sm text-gray-300">
+//                   I agree to the{' '}
+//                   <a href="#" className="text-green-400 hover:text-green-300">
+//                     Terms of Service
+//                   </a>{' '}
+//                   and{' '}
+//                   <a href="#" className="text-green-400 hover:text-green-300">
+//                     Privacy Policy
+//                   </a>
+//                 </label>
+//               </div>
+//               {errors.acceptTerms && (
+//                 <p className="text-sm text-red-400">{errors.acceptTerms}</p>
+//               )}
+
+//               <div className="flex items-start">
+//                 <input
+//                   type="checkbox"
+//                   id="newsletter"
+//                   name="newsletter"
+//                   checked={formData.newsletter}
+//                   onChange={handleChange}
+//                   className="w-4 h-4 mt-1 text-green-500 bg-gray-900 border-gray-700 rounded focus:ring-green-500 focus:ring-2"
+//                   disabled={isLoading}
+//                 />
+//                 <label htmlFor="newsletter" className="ml-2 text-sm text-gray-300">
+//                   Send me news, offers, and playlist recommendations from SoundWave
+//                 </label>
+//               </div>
+//             </div>
+
+//             {/* Submit Button */}
+//             <button
+//               type="submit"
+//               disabled={isLoading}
+//               className="w-full bg-green-500 text-white font-semibold py-3 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+//             >
+//               {isLoading ? (
+//                 <>
+//                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+//                   Creating Account...
+//                 </>
+//               ) : (
+//                 'Create Account'
+//               )}
+//             </button>
+//           </form>
+
+//           {/* Divider */}
+//           <div className="mt-6 pt-6 border-t border-gray-700">
+//             <p className="text-center text-gray-400 text-sm">
+//               Already have an account?{' '}
+//               <Link
+//                 to="/login"
+//                 className="text-green-400 hover:text-green-300 font-medium transition-colors"
+//               >
+//                 Sign in here
+//               </Link>
+//             </p>
+//           </div>
+//         </div>
+
+//         {/* Footer */}
+//         <div className="mt-8 text-center">
+//           <p className="text-gray-500 text-sm">
+//             Protected by reCAPTCHA. Google's{' '}
+//             <a href="#" className="text-green-400 hover:text-green-300">
+//               Privacy Policy
+//             </a>{' '}
+//             and{' '}
+//             <a href="#" className="text-green-400 hover:text-green-300">
+//               Terms of Service
+//             </a>{' '}
+//             apply.
+//           </p>
+//         </div>
+//       </div>
+//     </div>
+//   )
+// }
+
+// export default Register
+
+
 // Import necessary React hooks and components
 import React, { useState } from 'react';
 // Import icons from lucide-react library

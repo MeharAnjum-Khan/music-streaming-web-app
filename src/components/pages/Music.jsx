@@ -1,3 +1,357 @@
+// import React, { useState, useRef, useEffect } from 'react';
+// import './Music.css';
+
+// const Music = () => {
+//   // State for player controls
+//   const [isPlaying, setIsPlaying] = useState(false);
+//   const [currentTime, setCurrentTime] = useState(0);
+//   const [duration, setDuration] = useState(0);
+//   const [volume, setVolume] = useState(70);
+//   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+//   const [isShuffled, setIsShuffled] = useState(false);
+//   const [isRepeating, setIsRepeating] = useState(false);
+//   const [playlistOpen, setPlaylistOpen] = useState(false);
+  
+//   // Mock music data
+//   const [playlist, setPlaylist] = useState([
+//     {
+//       id: 1,
+//       title: 'Midnight City',
+//       artist: 'M83',
+//       album: 'Hurry Up, We\'re Dreaming',
+//       duration: '4:04',
+//       cover: 'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 2,
+//       title: 'Blinding Lights',
+//       artist: 'The Weeknd',
+//       album: 'After Hours',
+//       duration: '3:22',
+//       cover: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 3,
+//       title: 'Levitating',
+//       artist: 'Dua Lipa',
+//       album: 'Future Nostalgia',
+//       duration: '3:24',
+//       cover: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 4,
+//       title: 'Good 4 U',
+//       artist: 'Olivia Rodrigo',
+//       album: 'SOUR',
+//       duration: '2:58',
+//       cover: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 5,
+//       title: 'Stay',
+//       artist: 'The Kid LAROI, Justin Bieber',
+//       album: 'F*CK LOVE 3',
+//       duration: '2:23',
+//       cover: 'https://images.unsplash.com/photo-1518609878373-06d740f60d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 6,
+//       title: 'Heat Waves',
+//       artist: 'Glass Animals',
+//       album: 'Dreamland',
+//       duration: '3:59',
+//       cover: 'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     }
+//   ]);
+  
+//   // Audio player reference
+//   const audioRef = useRef(null);
+  
+//   // Current track
+//   const currentTrack = playlist[currentTrackIndex];
+  
+//   // Handle play/pause
+//   const togglePlay = () => {
+//     setIsPlaying(!isPlaying);
+    
+//     if (audioRef.current) {
+//       if (isPlaying) {
+//         audioRef.current.pause();
+//       } else {
+//         audioRef.current.play();
+//       }
+//     }
+//   };
+  
+//   // Handle next track
+//   const playNextTrack = () => {
+//     if (isShuffled) {
+//       // Play random track
+//       const randomIndex = Math.floor(Math.random() * playlist.length);
+//       setCurrentTrackIndex(randomIndex);
+//     } else {
+//       // Play next in order
+//       setCurrentTrackIndex((prevIndex) => 
+//         prevIndex === playlist.length - 1 ? 0 : prevIndex + 1
+//       );
+//     }
+    
+//     setIsPlaying(true);
+//   };
+  
+//   // Handle previous track
+//   const playPreviousTrack = () => {
+//     if (currentTime > 3) {
+//       // If track has been playing for more than 3 seconds, restart it
+//       setCurrentTime(0);
+//       if (audioRef.current) {
+//         audioRef.current.currentTime = 0;
+//       }
+//     } else {
+//       // Otherwise go to previous track
+//       setCurrentTrackIndex((prevIndex) => 
+//         prevIndex === 0 ? playlist.length - 1 : prevIndex - 1
+//       );
+//     }
+    
+//     setIsPlaying(true);
+//   };
+  
+//   // Handle time update
+//   const handleTimeUpdate = () => {
+//     if (audioRef.current) {
+//       setCurrentTime(audioRef.current.currentTime);
+//       setDuration(audioRef.current.duration || 0);
+//     }
+//   };
+  
+//   // Handle seek
+//   const handleSeek = (e) => {
+//     const newTime = parseFloat(e.target.value);
+//     setCurrentTime(newTime);
+    
+//     if (audioRef.current) {
+//       audioRef.current.currentTime = newTime;
+//     }
+//   };
+  
+//   // Handle volume change
+//   const handleVolumeChange = (e) => {
+//     const newVolume = parseInt(e.target.value);
+//     setVolume(newVolume);
+    
+//     if (audioRef.current) {
+//       audioRef.current.volume = newVolume / 100;
+//     }
+//   };
+  
+//   // Format time in MM:SS
+//   const formatTime = (time) => {
+//     const minutes = Math.floor(time / 60);
+//     const seconds = Math.floor(time % 60);
+//     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+//   };
+  
+//   // Handle track selection from playlist
+//   const selectTrack = (index) => {
+//     setCurrentTrackIndex(index);
+//     setIsPlaying(true);
+//   };
+  
+//   // Simulate audio playback with useEffect
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       if (isPlaying && audioRef.current) {
+//         if (currentTime >= duration && duration > 0) {
+//           if (isRepeating) {
+//             // Repeat the same track
+//             setCurrentTime(0);
+//             if (audioRef.current) {
+//               audioRef.current.currentTime = 0;
+//               audioRef.current.play();
+//             }
+//           } else {
+//             // Play next track
+//             playNextTrack();
+//           }
+//         } else if (isPlaying) {
+//           setCurrentTime(prev => prev + 0.5);
+//         }
+//       }
+//     }, 500);
+    
+//     return () => clearInterval(interval);
+//   }, [isPlaying, currentTime, duration, isRepeating, isShuffled]);
+  
+//   return (
+//     <div className="music-container">
+//       <header className="music-header">
+//         <h1>Music Player</h1>
+//         <p>Now playing: {currentTrack.title} by {currentTrack.artist}</p>
+//       </header>
+      
+//       <div className="music-player">
+//         <div className="player-main">
+//           <div className="album-art">
+//             <div className="album-cover">
+//               <img src={currentTrack.cover} alt={currentTrack.album} />
+//               <div className="vinyl-record"></div>
+//               <div className={`spin-animation ${isPlaying ? 'spinning' : ''}`}></div>
+//             </div>
+            
+//             <div className="track-info">
+//               <h2 className="track-title">{currentTrack.title}</h2>
+//               <p className="track-artist">{currentTrack.artist}</p>
+//               <p className="track-album">{currentTrack.album}</p>
+              
+//               <div className="progress-section">
+//                 <div className="time-display">
+//                   <span>{formatTime(currentTime)}</span>
+//                   <span>{formatTime(duration)}</span>
+//                 </div>
+//                 <input
+//                   type="range"
+//                   min="0"
+//                   max={duration || 100}
+//                   value={currentTime}
+//                   onChange={handleSeek}
+//                   className="progress-bar"
+//                 />
+//               </div>
+//             </div>
+//           </div>
+          
+//           <div className="player-controls">
+//             <div className="control-buttons">
+//               <button 
+//                 className={`control-btn ${isShuffled ? 'active' : ''}`}
+//                 onClick={() => setIsShuffled(!isShuffled)}
+//                 title="Shuffle"
+//               >
+//                 <i className="shuffle-icon">↪</i>
+//               </button>
+              
+//               <button 
+//                 className="control-btn"
+//                 onClick={playPreviousTrack}
+//                 title="Previous"
+//               >
+//                 <i className="prev-icon">⏮</i>
+//               </button>
+              
+//               <button 
+//                 className="play-btn"
+//                 onClick={togglePlay}
+//                 title={isPlaying ? 'Pause' : 'Play'}
+//               >
+//                 {isPlaying ? '⏸' : '▶'}
+//               </button>
+              
+//               <button 
+//                 className="control-btn"
+//                 onClick={playNextTrack}
+//                 title="Next"
+//               >
+//                 <i className="next-icon">⏭</i>
+//               </button>
+              
+//               <button 
+//                 className={`control-btn ${isRepeating ? 'active' : ''}`}
+//                 onClick={() => setIsRepeating(!isRepeating)}
+//                 title="Repeat"
+//               >
+//                 <i className="repeat-icon">🔁</i>
+//               </button>
+//             </div>
+            
+//             <div className="volume-control">
+//               <i className="volume-icon">🔊</i>
+//               <input
+//                 type="range"
+//                 min="0"
+//                 max="100"
+//                 value={volume}
+//                 onChange={handleVolumeChange}
+//                 className="volume-slider"
+//               />
+//               <span className="volume-percent">{volume}%</span>
+//             </div>
+//           </div>
+//         </div>
+        
+//         <div className="playlist-section">
+//           <div className="playlist-header">
+//             <h3>Playlist ({playlist.length} songs)</h3>
+//             <button 
+//               className="toggle-playlist-btn"
+//               onClick={() => setPlaylistOpen(!playlistOpen)}
+//             >
+//               {playlistOpen ? '▼ Hide' : '▲ Show'} Playlist
+//             </button>
+//           </div>
+          
+//           {playlistOpen && (
+//             <div className="playlist">
+//               {playlist.map((track, index) => (
+//                 <div 
+//                   key={track.id} 
+//                   className={`playlist-item ${index === currentTrackIndex ? 'active' : ''}`}
+//                   onClick={() => selectTrack(index)}
+//                 >
+//                   <div className="item-number">{index + 1}</div>
+//                   <div className="item-cover">
+//                     <img src={track.cover} alt={track.album} />
+//                   </div>
+//                   <div className="item-info">
+//                     <h4>{track.title}</h4>
+//                     <p>{track.artist}</p>
+//                   </div>
+//                   <div className="item-duration">{track.duration}</div>
+//                   <div className="item-status">
+//                     {index === currentTrackIndex && (
+//                       isPlaying ? '▶ Now Playing' : '⏸ Paused'
+//                     )}
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       </div>
+      
+//       {/* Hidden audio element for simulation */}
+//       <audio 
+//         ref={audioRef}
+//         onTimeUpdate={handleTimeUpdate}
+//         onLoadedMetadata={() => setDuration(audioRef.current?.duration || 0)}
+//         style={{ display: 'none' }}
+//       />
+      
+//       <div className="music-stats">
+//         <div className="stat-card">
+//           <h4>Total Listening Time</h4>
+//           <p className="stat-value">42 hours</p>
+//         </div>
+//         <div className="stat-card">
+//           <h4>Most Played Artist</h4>
+//           <p className="stat-value">The Weeknd</p>
+//         </div>
+//         <div className="stat-card">
+//           <h4>Favorite Genre</h4>
+//           <p className="stat-value">Pop / Electronic</p>
+//         </div>
+//         <div className="stat-card">
+//           <h4>Playlist Count</h4>
+//           <p className="stat-value">6</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Music;
+
+
 import React, { useState, useEffect } from 'react';
 import { 
   Search, 

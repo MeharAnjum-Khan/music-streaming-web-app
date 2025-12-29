@@ -1,3 +1,281 @@
+// import React, { useState } from 'react';
+// import './Podcasts.css';
+
+// const Podcasts = () => {
+//   const [selectedCategory, setSelectedCategory] = useState('all');
+//   const [subscriptions, setSubscriptions] = useState([
+//     { id: 1, name: 'The Joe Rogan Experience', host: 'Joe Rogan', episodes: 2000, subscribed: true },
+//     { id: 2, name: 'Serial', host: 'Sarah Koenig', episodes: 50, subscribed: true },
+//     { id: 3, name: 'The Daily', host: 'The New York Times', episodes: 1000, subscribed: false },
+//   ]);
+
+//   const categories = [
+//     'all', 'news', 'comedy', 'technology', 'business', 'health', 'education', 'entertainment'
+//   ];
+
+//   const podcasts = [
+//     {
+//       id: 1,
+//       title: 'The Joe Rogan Experience',
+//       host: 'Joe Rogan',
+//       description: 'Long form conversations with a variety of guests',
+//       category: 'comedy',
+//       episodes: 2000,
+//       duration: '2-3 hours',
+//       rating: 4.8,
+//       cover: 'https://images.unsplash.com/photo-1589903308904-1010c2294adc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+//       featured: true
+//     },
+//     {
+//       id: 2,
+//       title: 'Serial',
+//       host: 'Sarah Koenig',
+//       description: 'Investigative journalism series',
+//       category: 'news',
+//       episodes: 50,
+//       duration: '45-60 mins',
+//       rating: 4.9,
+//       cover: 'https://images.unsplash.com/photo-1584820927498-cfe5211fd8bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80',
+//       featured: true
+//     },
+//     {
+//       id: 3,
+//       title: 'The Daily',
+//       host: 'The New York Times',
+//       description: 'Top news stories of the day',
+//       category: 'news',
+//       episodes: 1000,
+//       duration: '20-30 mins',
+//       rating: 4.7,
+//       cover: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 4,
+//       title: 'How I Built This',
+//       host: 'Guy Raz',
+//       description: 'Stories of innovators and entrepreneurs',
+//       category: 'business',
+//       episodes: 300,
+//       duration: '60 mins',
+//       rating: 4.8,
+//       cover: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 5,
+//       title: 'Science Vs',
+//       host: 'Wendy Zukerman',
+//       description: 'Science tackles popular myths',
+//       category: 'education',
+//       episodes: 150,
+//       duration: '30-40 mins',
+//       rating: 4.6,
+//       cover: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     },
+//     {
+//       id: 6,
+//       title: 'TechStuff',
+//       host: 'Jonathan Strickland',
+//       description: 'Technology explained in simple terms',
+//       category: 'technology',
+//       episodes: 800,
+//       duration: '30 mins',
+//       rating: 4.5,
+//       cover: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80'
+//     }
+//   ];
+
+//   const episodes = [
+//     {
+//       id: 1,
+//       podcastId: 1,
+//       title: '#2015 - Elon Musk',
+//       description: 'Elon Musk returns to discuss Tesla, SpaceX, and the future of technology',
+//       duration: '2:45:12',
+//       date: '2024-01-15',
+//       played: false
+//     },
+//     {
+//       id: 2,
+//       podcastId: 2,
+//       title: 'Season 4, Episode 1: The Alibi',
+//       description: 'A new investigation begins',
+//       duration: '52:30',
+//       date: '2024-01-10',
+//       played: true
+//     },
+//     {
+//       id: 3,
+//       podcastId: 3,
+//       title: 'The Fall of FTX',
+//       description: 'Investigating the cryptocurrency exchange collapse',
+//       duration: '28:45',
+//       date: '2024-01-14',
+//       played: false
+//     }
+//   ];
+
+//   const toggleSubscription = (podcastId) => {
+//     setSubscriptions(prev => 
+//       prev.map(sub => 
+//         sub.id === podcastId ? { ...sub, subscribed: !sub.subscribed } : sub
+//       )
+//     );
+//   };
+
+//   const filteredPodcasts = selectedCategory === 'all' 
+//     ? podcasts 
+//     : podcasts.filter(podcast => podcast.category === selectedCategory);
+
+//   return (
+//     <div className="podcasts-container">
+//       <header className="podcasts-header">
+//         <h1>Podcasts</h1>
+//         <p>Discover and listen to your favorite podcasts</p>
+//       </header>
+
+//       {/* Featured Podcasts */}
+//       <section className="featured-podcasts">
+//         <h2>Featured Podcasts</h2>
+//         <div className="featured-grid">
+//           {podcasts.filter(p => p.featured).map(podcast => (
+//             <div key={podcast.id} className="featured-card">
+//               <div className="featured-cover">
+//                 <img src={podcast.cover} alt={podcast.title} />
+//                 <div className="featured-badge">Featured</div>
+//               </div>
+//               <div className="featured-info">
+//                 <h3>{podcast.title}</h3>
+//                 <p className="host">{podcast.host}</p>
+//                 <p className="description">{podcast.description}</p>
+//                 <div className="featured-meta">
+//                   <span className="episodes">{podcast.episodes} episodes</span>
+//                   <span className="rating">⭐ {podcast.rating}</span>
+//                 </div>
+//                 <button className="subscribe-btn">
+//                   {subscriptions.find(s => s.id === podcast.id)?.subscribed ? 'Subscribed' : 'Subscribe'}
+//                 </button>
+//               </div>
+//             </div>
+//           ))}
+//         </div>
+//       </section>
+
+//       <div className="podcasts-main">
+//         <div className="podcasts-sidebar">
+//           <div className="categories-section">
+//             <h3>Categories</h3>
+//             <div className="categories-list">
+//               {categories.map(category => (
+//                 <button
+//                   key={category}
+//                   className={`category-btn ${selectedCategory === category ? 'active' : ''}`}
+//                   onClick={() => setSelectedCategory(category)}
+//                 >
+//                   {category.charAt(0).toUpperCase() + category.slice(1)}
+//                 </button>
+//               ))}
+//             </div>
+//           </div>
+
+//           <div className="subscriptions-section">
+//             <h3>Your Subscriptions</h3>
+//             <div className="subscriptions-list">
+//               {subscriptions.filter(s => s.subscribed).map(sub => (
+//                 <div key={sub.id} className="subscription-item">
+//                   <div className="sub-info">
+//                     <h4>{sub.name}</h4>
+//                     <p>{sub.host}</p>
+//                   </div>
+//                   <button 
+//                     className="unsubscribe-btn"
+//                     onClick={() => toggleSubscription(sub.id)}
+//                   >
+//                     Unsubscribe
+//                   </button>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+
+//         <div className="podcasts-content">
+//           <div className="content-header">
+//             <h2>
+//               {selectedCategory === 'all' ? 'All Podcasts' : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)}
+//             </h2>
+//             <div className="sort-options">
+//               <select className="sort-select">
+//                 <option>Sort by Popularity</option>
+//                 <option>Sort by Date</option>
+//                 <option>Sort by Rating</option>
+//               </select>
+//             </div>
+//           </div>
+
+//           <div className="podcasts-grid">
+//             {filteredPodcasts.map(podcast => (
+//               <div key={podcast.id} className="podcast-card">
+//                 <div className="podcast-cover">
+//                   <img src={podcast.cover} alt={podcast.title} />
+//                   <button 
+//                     className={`subscribe-icon ${subscriptions.find(s => s.id === podcast.id)?.subscribed ? 'subscribed' : ''}`}
+//                     onClick={() => toggleSubscription(podcast.id)}
+//                     title={subscriptions.find(s => s.id === podcast.id)?.subscribed ? 'Unsubscribe' : 'Subscribe'}
+//                   >
+//                     {subscriptions.find(s => s.id === podcast.id)?.subscribed ? '✓' : '+'}
+//                   </button>
+//                 </div>
+//                 <div className="podcast-info">
+//                   <h3>{podcast.title}</h3>
+//                   <p className="podcast-host">{podcast.host}</p>
+//                   <p className="podcast-description">{podcast.description}</p>
+//                   <div className="podcast-meta">
+//                     <span className="meta-item">🎧 {podcast.episodes} eps</span>
+//                     <span className="meta-item">⏱ {podcast.duration}</span>
+//                     <span className="meta-item">⭐ {podcast.rating}</span>
+//                   </div>
+//                   <button className="play-btn">Play Latest</button>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+
+//           {/* Recent Episodes */}
+//           <section className="recent-episodes">
+//             <h3>Recent Episodes</h3>
+//             <div className="episodes-list">
+//               {episodes.map(episode => (
+//                 <div key={episode.id} className="episode-card">
+//                   <div className="episode-info">
+//                     <div className="episode-header">
+//                       <h4>{episode.title}</h4>
+//                       <span className={`played-status ${episode.played ? 'played' : 'new'}`}>
+//                         {episode.played ? 'Played' : 'New'}
+//                       </span>
+//                     </div>
+//                     <p className="episode-description">{episode.description}</p>
+//                     <div className="episode-meta">
+//                       <span className="date">{episode.date}</span>
+//                       <span className="duration">{episode.duration}</span>
+//                     </div>
+//                   </div>
+//                   <div className="episode-actions">
+//                     <button className="play-episode-btn">▶ Play</button>
+//                     <button className="download-btn">⬇ Download</button>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           </section>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Podcasts;
+
+
 import React, { useState, useEffect } from 'react';
 import { 
   Search, 

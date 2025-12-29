@@ -1,0 +1,28 @@
+
+/* App root container */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #121212;
+  color: white;
+}
+
+/* Main content where pages render */
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+
+  /* 🔴 IMPORTANT FIX: 
+     This prevents content from being hidden behind the AudioPlayer */
+  padding-bottom: 90px; /* same as audio player height */
+}
+
+/* Global audio player wrapper */
+.global-player {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}

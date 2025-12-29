@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import './ProgressBar.css'; // Assuming you have a CSS file for styling
 
