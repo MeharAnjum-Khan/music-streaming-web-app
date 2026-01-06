@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import {
   Home,
-  Music,
+  AudioLines,
   Mic2,
   ListMusic,
   LogOut,
@@ -13,7 +13,13 @@ const Navbar = () => {
   return (
     <aside className="w-64 bg-black text-white flex flex-col p-4">
       {/* App Logo */}
-      <h1 className="text-xl font-bold mb-6">🎵 MyMusic</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <AudioLines className="text-cyan-400" size={24} />
+        <div className="flex flex-col">
+          <h1 className="text-xl font-bold leading-none">Stremix</h1>
+          <p className="text-[9px] text-gray-400 font-medium tracking-wide mt-0.5 uppercase">Play Your Vibe</p>
+        </div>
+      </div>
 
       {/* Navigation */}
       <nav className="flex flex-col gap-3">
@@ -29,7 +35,7 @@ const Navbar = () => {
           to="/music"
           className="flex items-center gap-3 text-gray-300 hover:text-white"
         >
-          <Music size={20} />
+          <AudioLines size={20} />
           Music
         </NavLink>
 

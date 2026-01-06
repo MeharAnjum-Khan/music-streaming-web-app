@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Music, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
+import { AudioLines, Mail, Lock, User, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
@@ -46,12 +46,14 @@ const Register = () => {
         {/* Logo & Header */}
         <div className="flex flex-col items-center mb-6 relative">
           <div className="bg-gradient-to-br from-cyan-500 to-purple-600 p-2.5 rounded-2xl mb-3 shadow-lg shadow-cyan-500/20">
-            <Music className="w-8 h-8 text-white" strokeWidth={2.5} />
+            <AudioLines className="w-8 h-8 text-white" strokeWidth={2.5} />
           </div>
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent tracking-tight">
-            MelodyFlow
-          </h1>
-          <p className="text-slate-400 mt-1 text-xs text-center">Create your account to get started</p>
+          <div className="text-center">
+            <h1 className="text-3xl font-black bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent tracking-tighter leading-none">
+              Stremix
+            </h1>
+            <p className="text-[10px] text-slate-400 font-bold tracking-[0.2em] mt-2 uppercase">Play Your Vibe</p>
+          </div>
         </div>
 
         {error && (

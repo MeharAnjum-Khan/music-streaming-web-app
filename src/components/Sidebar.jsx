@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   Home, 
   Search as SearchIcon, 
-  Music as MusicIcon, 
+  AudioLines as AudioLinesIcon, 
   Library, 
   Podcast,
   User,
@@ -16,7 +16,7 @@ const Sidebar = () => {
   const navLinks = [
     { to: '/', icon: Home, label: 'Home' },
     { to: '/search', icon: SearchIcon, label: 'Search' },
-    { to: '/music', icon: MusicIcon, label: 'Your Library' },
+    { to: '/music', icon: AudioLinesIcon, label: 'Your Library' },
     { to: '/playlist', icon: Library, label: 'Playlists' },
     { to: '/podcasts', icon: Podcast, label: 'Podcasts' },
   ];
@@ -32,11 +32,14 @@ const Sidebar = () => {
     <aside className="w-64 bg-black/20 backdrop-blur-lg border-r border-white/10 min-h-screen p-6 hidden md:flex flex-col">
       <div className="flex items-center space-x-3 mb-10">
         <div className="bg-gradient-to-br from-cyan-500 to-purple-600 p-2 rounded-lg">
-          <MusicIcon className="w-8 h-8 text-white" />
+          <AudioLinesIcon className="w-8 h-8 text-white" />
         </div>
-        <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
-          MelodyFlow
-        </h1>
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent leading-none">
+            Stremix
+          </h1>
+          <p className="text-[10px] text-slate-400 font-medium tracking-wider mt-1 uppercase">Play Your Vibe</p>
+        </div>
       </div>
 
       <nav className="space-y-2 mb-8">
