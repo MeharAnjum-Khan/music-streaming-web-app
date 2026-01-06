@@ -1,125 +1,58 @@
-import React from "react";
+import { useEffect, useRef } from "react";
+import { FaPlay, FaPause, FaMusic } from "react-icons/fa";
+import { usePlayer } from "../context/PlayerContext";
 import "./AudioPlayer.css";
-import useAudioPlayer from "../hooks/useAudioPlayer";
-import ProgressBar from "./ProgressBar";
-import VolumeControl from "./VolumeControl";
 
-import {
-  FaPlay,
-  FaPause,
-  FaStepBackward,
-  FaStepForward,
-  FaRandom,
-  FaRedo,
-  FaHeart,
-  FaRegHeart,
-  FaListUl
-} from "react-icons/fa";
+const AudioPlayer = () => {
+  const { currentSong, isPlaying, setIsPlaying } = usePlayer();
+  const audioRef = useRef(null);
 
-const AudioPlayer = ({
-  audioSrc,
-  title = "No song selected",
-  artist = "Select a song to play",
-  thumbnail = ""
-}) => {
-  const {
-    isPlaying,
-    currentTime,
-    duration,
-    volume,
-    isMuted,
-    playbackRate,
-    togglePlay,
-    seek,
-    changeVolume,
-    toggleMute,
-    changePlaybackRate
-  } = useAudioPlayer(audioSrc);
+  useEffect(() => {
+    if (!audioRef.current || !currentSong) return;
 
-  const format = (t) => {
-    if (isNaN(t)) return "00:00";
-    const m = Math.floor(t / 60);
-    const s = Math.floor(t % 60);
-    return `${m.toString().padStart(2, "0")}:${s
-      .toString()
-      .padStart(2, "0")}`;
-  };
+    isPlaying ? audioRef.current.play() : audioRef.current.pause();
+  }, [currentSong, isPlaying]);
+
+  if (!currentSong) return null;
 
   return (
     <div className="audio-player">
-      {/* LEFT */}
+      {/* LEFT — Track Info */}
       <div className="player-track-info">
         <div className="track-thumbnail">
-          {thumbnail ? <img src={thumbnail} alt="cover" /> : "🎵"}
+          {currentSong.cover ? (
+            <img src={currentSong.cover} alt={currentSong.title} />
+          ) : (
+            <FaMusic className="music-icon" />
+          )}
         </div>
 
         <div className="track-info">
-          <h3>{title}</h3>
-          <p>{artist}</p>
+          <h3>{currentSong.title}</h3>
+          <p>{currentSong.artist}</p>
         </div>
-
-        <button className="like-btn">
-          <FaRegHeart />
-        </button>
       </div>
 
-      {/* CENTER */}
+      {/* CENTER — Controls */}
       <div className="player-controls-section">
         <div className="controls-row">
-          <button className="player-btn playback-rate-btn" onClick={changePlaybackRate}>
-            {playbackRate}x
-          </button>
-
-          <button className="player-btn">
-            <FaRandom />
-          </button>
-
-          <button className="player-btn">
-            <FaStepBackward />
-          </button>
-
-          <button className="player-btn play-pause-btn" onClick={togglePlay}>
+          <button
+            className="player-btn play-pause-btn"
+            onClick={() => setIsPlaying(!isPlaying)}
+          >
             {isPlaying ? <FaPause /> : <FaPlay />}
           </button>
-
-          <button className="player-btn">
-            <FaStepForward />
-          </button>
-
-          <button className="player-btn">
-            <FaRedo />
-          </button>
-        </div>
-
-        <div className="progress-section">
-          <span className="time-display">{format(currentTime)}</span>
-          <ProgressBar
-            currentTime={currentTime}
-            duration={duration}
-            onSeek={seek}
-          />
-          <span className="time-display">{format(duration)}</span>
         </div>
       </div>
 
-      {/* RIGHT */}
+      {/* RIGHT — Extras */}
       <div className="player-extras">
-        <VolumeControl
-          volume={volume}
-          isMuted={isMuted}
-          onVolumeChange={changeVolume}
-          onToggleMute={toggleMute}
-        />
-
         <div className="queue-info">
-          <span className="queue-count">1/1</span>
-          <span>in queue</span>
+          Queue <span className="queue-count">1</span>
         </div>
-
-        <button className="player-btn">
-          <FaListUl />
-        </button>
       </div>
+
+      <audio ref={audioRef} src={currentSong.audioUrl} />
     </div>
   );
 };

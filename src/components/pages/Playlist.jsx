@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Search, 
   Plus, 
-  Edit3, 
-  Trash2, 
   Play, 
   Pause, 
   Heart, 
@@ -13,17 +11,17 @@ import {
   Clock,
   Music,
   Share2,
-  Download,
   ListMusic,
-  FolderPlus
 } from 'lucide-react';
+import { usePlayer } from '../context/PlayerContext';
+import MusicCard from '../MusicCard';
 
 const Playlist = () => {
+  const { playSong, currentSong, isPlaying } = usePlayer();
   // ========== STATE MANAGEMENT ==========
   const [searchQuery, setSearchQuery] = useState('');
   const [playlists, setPlaylists] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState(null);
-  const [currentPlaying, setCurrentPlaying] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [newPlaylist, setNewPlaylist] = useState({ name: '', description: '', isPublic: true });
@@ -42,9 +40,22 @@ const Playlist = () => {
       created: "2024-01-15",
       color: "from-amber-500 to-orange-600",
       songsList: [
-        { id: 1, title: "Good Morning", artist: "Kanye West", duration: "3:15" },
-        { id: 2, title: "Walking on Sunshine", artist: "Katrina & The Waves", duration: "3:43" },
-        { id: 3, title: "Here Comes the Sun", artist: "The Beatles", duration: "3:05" }
+        { 
+          id: 1, 
+          title: "Good Morning", 
+          artist: "Kanye West", 
+          duration: "3:15",
+          cover: "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=400&fit=crop",
+          audioUrl: "/songs/morning.mp3"
+        },
+        { 
+          id: 2, 
+          title: "Walking on Sunshine", 
+          artist: "Katrina & The Waves", 
+          duration: "3:43",
+          cover: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+          audioUrl: "/songs/sunshine.mp3"
+        }
       ]
     },
     {
@@ -141,8 +152,8 @@ const Playlist = () => {
   }, []);
 
   // ========== EVENT HANDLERS ==========
-  const handlePlayPause = (songId) => {
-    setCurrentPlaying(currentPlaying === songId ? null : songId);
+  const handlePlayPause = (song) => {
+    playSong(song);
   };
 
   const handlePlaylistSelect = (playlist) => {
@@ -290,15 +301,15 @@ const Playlist = () => {
               </thead>
               <tbody>
                 {selectedPlaylist.songsList.map((song, index) => (
-                  <tr key={song.id} className="border-b border-white/5 hover:bg-white/5 transition">
+                  <tr key={song.id} className="border-b border-white/5 hover:bg-white/5 transition group">
                     <td className="p-4">
                       <div className="flex items-center">
-                        <span className="text-slate-400 mr-3 w-6">{index + 1}</span>
+                        <span className="text-slate-400 mr-3 w-6 group-hover:hidden">{index + 1}</span>
                         <button 
-                          onClick={() => handlePlayPause(song.id)}
-                          className="w-8 h-8 flex items-center justify-center rounded-full bg-cyan-500 hover:bg-cyan-600 transition"
+                          onClick={() => handlePlayPause(song)}
+                          className="w-8 h-8 flex items-center justify-center rounded-full bg-cyan-500 hover:bg-cyan-600 transition hidden group-hover:flex"
                         >
-                          {currentPlaying === song.id ? (
+                          {currentSong?.id === song.id && isPlaying ? (
                             <Pause className="w-4 h-4 text-white" />
                           ) : (
                             <Play className="w-4 h-4 text-white" />
@@ -426,84 +437,20 @@ const Playlist = () => {
       </div>
 
       {/* ========== PLAYLISTS GRID ========== */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {filteredPlaylists.map(playlist => (
-          <div 
-            key={playlist.id}
-            className="group bg-white/5 rounded-2xl p-5 border border-white/10 hover:border-cyan-500/30 transition-all duration-300 cursor-pointer"
+          <MusicCard 
+            key={playlist.id} 
+            playlist={playlist} 
             onClick={() => handlePlaylistSelect(playlist)}
-          >
-            {/* Playlist Cover */}
-            <div className="relative mb-4">
-              <div className={`aspect-square bg-gradient-to-br ${playlist.color} rounded-xl flex items-center justify-center`}>
-                <ListMusic className="w-16 h-16 text-white/50" />
-              </div>
-              
-              {/* Play Button */}
-              <button className="absolute bottom-2 right-2 p-3 bg-cyan-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
-                <Play className="w-5 h-5 text-white" />
-              </button>
-            </div>
-
-            {/* Playlist Info */}
-            <div>
-              <h3 className="font-bold text-lg mb-1 line-clamp-1">{playlist.name}</h3>
-              <p className="text-sm text-slate-400 mb-3 line-clamp-2">{playlist.description}</p>
-              
-              <div className="flex items-center justify-between text-sm text-slate-500">
-                <div className="flex items-center space-x-4">
-                  <span className="flex items-center">
-                    <Music className="w-4 h-4 mr-1" />
-                    {playlist.songs}
-                  </span>
-                  <span className="flex items-center">
-                    <Clock className="w-4 h-4 mr-1" />
-                    {playlist.duration}
-                  </span>
-                </div>
-                
-                <span className={`px-2 py-1 rounded text-xs ${playlist.isPublic ? 'bg-cyan-500/20 text-cyan-400' : 'bg-slate-800 text-slate-300'}`}>
-                  {playlist.isPublic ? 'Public' : 'Private'}
-                </span>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
-              <div className="flex items-center text-sm text-slate-400">
-                <Users className="w-4 h-4 mr-2" />
-                {playlist.owner}
-              </div>
-              
-              <div className="flex items-center space-x-2">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeletePlaylist(playlist.id);
-                  }}
-                  className="p-2 rounded-full text-slate-400 hover:text-rose-400"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Handle edit
-                  }}
-                  className="p-2 rounded-full text-slate-400 hover:text-cyan-400"
-                >
-                  <Edit3 className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </div>
+          />
         ))}
       </div>
 
       {/* ========== EMPTY STATE ========== */}
       {filteredPlaylists.length === 0 && (
-        <div className="text-center py-12">
-          <FolderPlus className="w-16 h-16 text-slate-600 mx-auto mb-4" />
+        <div className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
+          <ListMusic className="w-16 h-16 text-slate-600 mx-auto mb-4" />
           <h3 className="text-xl font-semibold text-slate-300 mb-2">No playlists found</h3>
           <p className="text-slate-500 mb-6">
             {searchQuery ? `No results for "${searchQuery}"` : 'Create your first playlist to get started'}
